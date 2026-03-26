@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa Sobotta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       VARIABLES DE COLOR — extraídas del logotipo Casa Sobotta
+       ============================================= */
+    :root {
+      --crema:        #acc1a3;   /* fondo — verde salvia del logotipo */
+      --crema-oscura: #8DA38A;   /* tono ligeramente más oscuro para contrastes si hicieran falta */
+      --marron-oscuro:#4F4743;   /* textos principales — color oscuro de "SOBOTTA" */
+      --marron-medio: #AD8F56;   /* acentos, etiquetas — color dorado de "CASA" */
+      --marron-claro: #7B746F;   /* borde suave botones */
+      --hover-bg:     rgba(79, 71, 67, 0.08); /* fondo hover integrado (basado en el texto oscuro) */
+      --sombra:       rgba(79, 71, 67, 0.15); /* sombra suave */
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background-color: var(--crema);
+      color: var(--marron-oscuro);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       TEXTURA DE GRANO (noise overlay)
+       ============================================= */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .03;
+    }
+
+    /* =============================================
+       CABECERA / HERO
+       ============================================= */
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem 2.5rem;
+      position: relative;
+      text-align: center;
+    }
+
+    /* línea decorativa superior */
+    header::before {
+      content: '';
+      display: block;
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--marron-medio), transparent);
+      margin-bottom: 2.5rem;
+    }
+
+    .logo-wrap {
+      width: min(340px, 88vw);
+      animation: fadeDown .9s ease both;
+    }
+
+    .logo-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* dirección / subtítulo */
+    .subtitle {
+      margin-top: 1.4rem;
+      font-size: clamp(.95rem, 3vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--marron-oscuro); /* Cambiado a oscuro para que lea bien sobre el verde */
+      animation: fadeUp .9s .25s ease both;
+    }
+
+    /* línea decorativa inferior cabecera */
+    header::after {
+      content: '—';
+      display: block;
+      color: var(--marron-claro);
+      font-size: .9rem;
+      letter-spacing: .6em;
+      margin-top: 2rem;
+      opacity: .5;
+      animation: fadeUp .9s .4s ease both;
+    }
+
+    /* =============================================
+       SECCIÓN PRINCIPAL DE BOTONES
+       ============================================= */
+    main {
+      padding: 0 1.25rem 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.1rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Grupo: cartas */
+    .btn-group-label {
+      align-self: flex-start;
+      font-size: .88rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--marron-oscuro); /* Cambiado para mayor legibilidad */
+      opacity: .8;
+      margin-top: .6rem;
+      margin-bottom: -.3rem;
+      padding-left: .15rem;
+    }
+
+    /* =============================================
+       BOTONES
+       ============================================= */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      width: 100%;
+      min-height: 64px;
+      padding: 1.1rem 1.8rem;
+      border-radius: 3px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.05rem, 4vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, background-color .22s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* efecto ripple al tocar */
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.12);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .btn:active::after { opacity: 1; }
+    .btn:active { transform: scale(.975); }
+
+    /* — Todos los botones: integrados en la paleta, sin rellenos extraños */
+    .btn-primary,
+    .btn-secondary,
+    .btn-outline,
+    .btn-reserva {
+      background-color: transparent;
+      color: var(--marron-oscuro);
+      border: 1.5px solid var(--marron-claro);
+      box-shadow: none;
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-outline:hover,
+    .btn-reserva:hover {
+      background-color: var(--hover-bg);
+      border-color: var(--marron-medio);
+      color: var(--marron-oscuro);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--sombra);
+    }
+
+    /* Botón principal destacado (Carta y Reserva) */
+    .btn-primary,
+    .btn-reserva {
+      background-color: rgba(79, 71, 67, 0.05); /* Tono muy sutil basado en el color oscuro */
+      border-color: var(--marron-medio);
+    }
+
+    .btn-primary:hover,
+    .btn-reserva:hover {
+      background-color: rgba(79, 71, 67, 0.1);
+    }
+
+    /* gap reducido sin icono */
+    .btn { gap: 0; }
+
+    /* Animaciones de entrada escalonadas — por orden real en el DOM */
+    main > *:nth-child(1) { animation: fadeUp .7s .30s ease both; }
+    main > *:nth-child(2) { animation: fadeUp .7s .40s ease both; }
+    main > *:nth-child(3) { animation: fadeUp .7s .50s ease both; }
+    main > *:nth-child(4) { animation: fadeUp .7s .60s ease both; }
+    main > *:nth-child(5) { animation: fadeUp .7s .70s ease both; }
+    main > *:nth-child(6) { animation: fadeUp .7s .80s ease both; }
+    main > *:nth-child(7) { animation: fadeUp .7s .90s ease both; }
+    main > *:nth-child(8) { animation: fadeUp .7s 1.00s ease both; }
+    main > *:nth-child(9) { animation: fadeUp .7s 1.10s ease both; }
+
+    /* Divisor entre grupos */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--marron-medio), transparent);
+      opacity: .5;
+      margin: .4rem 0;
+      animation: fadeUp .7s .6s ease both;
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 3rem;
+      font-size: .82rem;
+      letter-spacing: .12em;
+      color: var(--marron-oscuro);
+      opacity: .8;
+      animation: fadeUp .9s .9s ease both;
+    }
+
+    footer p + p { margin-top: .4rem; }
+
+    footer a {
+      color: var(--marron-oscuro);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* =============================================
+       KEYFRAMES
+       ============================================= */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =============================================
+       RESPONSIVE — pantallas grandes
+       ============================================= */
+    @media (min-width: 600px) {
+      header { padding: 4rem 2rem 3rem; }
+      main   { padding: 0 2rem 5rem; }
+      .btn   { min-height: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-wrap">
+      <img
+        src="logoSobotta.png"
+        alt="Logotipo Casa Sobotta"
+      />
+    </div>
+    <p class="subtitle">Calle Olivares, 3  ·  Triana</p>
+  </header>
+
+  <main>
+
+    <span class="btn-group-label">Nuestra carta</span>
+
+    <a class="btn btn-primary" href="carta.pdf" target="_blank" rel="noopener" aria-label="Ver la carta en PDF">
+      Carta
+    </a>
+
+    <div class="divider"></div>
+
+    <span class="btn-group-label">-</span>
+
+    <a class="btn btn-secondary" href="evento.pdf" target="_blank" rel="noopener" aria-label="Ver la carta del Evento en PDF">
+      -
+    </a>
+
+    <div class="divider"></div>
+
+    <span class="btn-group-label">Contacto</span>
+
+    <a class="btn btn-outline" href="tel:+34000000000" aria-label="Llamar para organizar un evento">
+      Organiza tu evento
+    </a>
+
+    <a class="btn btn-reserva" href="tel:+34000000000" aria-label="Llamar para reservar mesa">
+      Reserva tu mesa
+    </a>
+
+  </main>
+
+  <footer>
+    <p>Casa Sobotta</p>
+    <p>Calle Olivares, 3  ·  Triana</p>
+    <p><a href="https://www.google.com/maps/place/Casa+Sobotta/@37.3814963,-6.0103204,741m/data=!3m2!1e3!4b1!4m6!3m5!1s0xd126d42ae15cea5:0xcdc42294c680b25f!8m2!3d37.3814963!4d-6.0077455!16s%2Fg%2F11z3ppzbqv?entry=ttu&g_ep=EgoyMDI2MDMyMy4xIKXMDSoASAFQAw%3D%3D" rel="noopener" target="_blank">Ver en Google Maps</a></p>
+  </footer>
+
+</body>
+</html>
